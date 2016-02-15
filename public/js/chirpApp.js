@@ -30,23 +30,20 @@ app.config(function($routeProvider){
 
 app.factory('postService', ['$resource', function($resource){
   return $resource('api/posts/:id');
-  // var baseUrl = "api/posts";
-  // var factory = {};
-  // factory.getAll = function(){
-  //   return $http.get(baseUrl);
-  // }
-  // return factory;
 }]);
 
-app.controller('mainController', ['$scope', 'postService', function($scope, postService){
+app.controller('mainController', ['$rootScope', '$scope', 'postService', function($rootScope, $scope, postService){
 	$scope.posts = postService.query();
-	$scope.newPost = {created_by: '', text: '', create_at: ''};
+	$scope.newPost = {created_by: '', text: '', created_at: ''};
 
 
 	$scope.post = function(){
+    $scope.newPost.created_by = $rootScope.current_user;
     $scope.newPost.created_at = Date.now();
-    $scope.posts.push($scope.newPost);
-    $scope.newPost = {created_by: '', text: '', created_at: ''};
+    postService.save($scope.newPost, function(){
+      $scope.posts = postService.query();
+      $scope.newPost = {created_by: '', text: '', created_at: ''};
+    });
   };
 }]);
 

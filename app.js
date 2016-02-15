@@ -10,7 +10,7 @@ var index = require('./routes/index');
 var authenticate = require('./routes/authenticate')(passport);
 var mongoose = require('mongoose');
 //connect to mongodb
-mongoose.connect("mongodb://localhost:27017/chirp-test");
+mongoose.connect("mongodb://root:abc123@ds047345.mongolab.com:47345/chirp-app");
 
 
 var app = express();
